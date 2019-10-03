@@ -4,10 +4,10 @@ set -exvu
 
 ADMIN_EMAIL=${ADMIN_EMAIL:-admin@i.dont.exist}
 CACHE_TTL=${CACHE_TTL:-200}
-POSTGRES_HOST=${POSTGRES_HOST:-localhost}
-POSTGRES_USER=${POSTGRES_USER:-internetnl}
-POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-password}
-POSTGRES_DB=${POSTGRES_DB:-internetnl_db1}
+DB_HOST=${DB_HOST:-localhost}
+DB_USER=${DB_USER:-internetnl}
+DB_PASSWORD=${DB_PASSWORD:-password}
+DB_SCHEMA_NAME=${DB_SCHEMA_NAME:-internetnl_db1}
 RABBITMQ_HOST=${RABBITMQ_HOST:-localhost}
 REDIS_HOST=${REDIS_HOST:-localhost}
 
@@ -31,10 +31,10 @@ sed \
     -e "s|BROKER_URL = 'amqp://guest@localhost//'|BROKER_URL = 'amqp://guest@${RABBITMQ_HOST}//'|g" \
     -e "s|ALLOWED_HOSTS = .*|ALLOWED_HOSTS = [\"localhost\"]|g" \
     -e "s|django@internet.nl|"${ADMIN_EMAIL}"|g" \
-    -e "s|'HOST': '127.0.0.1'|'HOST': '${POSTGRES_HOST}'|g" \
-    -e "s|'NAME': '<db_name>'|'NAME': '${POSTGRES_DB}'|g" \
-    -e "s|'USER': '<db_user>'|'USER': '${POSTGRES_USER}'|g" \
-    -e "s|'PASSWORD': 'password'|'PASSWORD': '${POSTGRES_PASSWORD}'|g" \
+    -e "s|'HOST': '127.0.0.1'|'HOST': '${DB_HOST}'|g" \
+    -e "s|'NAME': '<db_name>'|'NAME': '${DB_SCHEMA_NAME}'|g" \
+    -e "s|'USER': '<db_user>'|'USER': '${DB_USER}'|g" \
+    -e "s|'PASSWORD': 'password'|'PASSWORD': '${DB_PASSWORD}'|g" \
     -e "s|CACHE_TTL = .*|CACHE_TTL = ${CACHE_TTL}|g" \
     ${APP_PATH}/internetnl/settings.py-dist > ${APP_PATH}/internetnl/settings.py
 

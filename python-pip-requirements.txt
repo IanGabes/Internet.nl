@@ -20,3 +20,4 @@ polib
 rjsmin
 libsass
 markdown
+mysqlclient

@@ -11,10 +11,10 @@ If using your own Redis, RabbitMQ and Postgres servers you don't need Docker Com
 $ docker run --dns 127.0.0.1 --network host \
     -e RABBITMQ_HOST=<IP address or domain name> \
     -e REDIS_HOST=<IP address or domain name> \
-    -e POSTGRES_HOST=<IP address or domain name> \
-    -e POSTGRES_USER=<username> \
-    -e POSTGRES_DB=<db name> \
-    -e POSTGRES_PASS=<password> \
+    -e DB_HOST=<IP address or domain name> \
+    -e DB_USER=<username> \
+    -e DB_SCHEMA_NAME=<db name> \
+    -e DB_PASSWORD=<password> \
     nlnetlabs/internetnl:latest
 ```
 
