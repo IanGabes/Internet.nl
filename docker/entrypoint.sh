@@ -4,12 +4,12 @@ set -exvu
 
 ADMIN_EMAIL=${ADMIN_EMAIL:-admin@i.dont.exist}
 CACHE_TTL=${CACHE_TTL:-200}
-DB_HOST=${DB_HOST:-localhost}
+DB_HOST=${DB_HOST:-mysql}
 DB_USER=${DB_USER:-internetnl}
 DB_PASSWORD=${DB_PASSWORD:-password}
 DB_SCHEMA_NAME=${DB_SCHEMA_NAME:-internetnl_db1}
-RABBITMQ_HOST=${RABBITMQ_HOST:-localhost}
-REDIS_HOST=${REDIS_HOST:-localhost}
+RABBITMQ_HOST=${RABBITMQ_HOST:-rabbitmq}
+REDIS_HOST=${REDIS_HOST:-redis}
 
 APP_PATH=/app
 

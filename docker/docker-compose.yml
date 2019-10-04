@@ -1,17 +1,21 @@
-version: '2.0'
+version: '2.2'
 
 services:  
   app:
-    image: iangabes/internetnl:latest
+    networks:
+      internetnl-net:
+        aliases:
+          - app
+          - internetnl
+    image: iangabes/internetnl:czhu
     build:
       context: ..
       dockerfile: docker/Dockerfile
     container_name: internetnl
-    network_mode: host
-    dns: 127.0.0.1
-    cap_add:
-      - NET_BIND_SERVICE
-      - NET_RAW
+    #dns: 127.0.0.1
+    #cap_add:
+      #- NET_BIND_SERVICE
+      #- NET_RAW
     ports:
       - "8080:8080"
     depends_on:
@@ -20,24 +24,48 @@ services:
       - mysql
 
   redis:
-    network_mode: host
+    networks:
+      internetnl-net:
+        aliases:
+          - redis
     image: redis:alpine
     container_name: redis
 
   rabbitmq:
-    network_mode: host
+    networks:
+     internetnl-net:
+       aliases:
+         - rabbitmq
     image: rabbitmq:alpine
     container_name: rabbitmq
 
   mysql:
-    network_mode: host
-    image: mysql:latest
+    networks:
+      internetnl-net:
+        aliases:
+          - mysql
+    # using an older version of MySQL due to a versioning issue between MySQL and the MySQL client
+    # https://tableplus.com/blog/2018/07/failed-to-load-caching-sha2-password-authentication-plugin-solved.html
+    # https://stackoverflow.com/questions/50469587/django-db-utils-operationalerror-2059-authentication-plugin-caching-sha2-pas/53463299
+    image: mysql:5.7
     container_name: mysql
     environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
       - MYSQL_USER=internetnl
-      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_PASSWORD=password
       - MYSQL_DATABASE=internetnl_db1
     volumes:
       - my-datavolume:/tmp/lib/mysql
 volumes:
   my-datavolume:
+networks:
+  internetnl-net:
+    driver: bridge
+    enable_ipv6: true
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.18.0.0/16
+        gateway: 172.18.0.1
+      - subnet: fcdd:1::/48
+        gateway: fcdd:1::1
