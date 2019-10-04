@@ -2,32 +2,37 @@ version: '2.0'
 
 services:  
   app:
-    image: nlnetlabs/internetnl:latest
+    image: iangabes/internetnl:latest
     build:
       context: ..
       dockerfile: docker/Dockerfile
+    container_name: internetnl
     network_mode: host
     dns: 127.0.0.1
     cap_add:
       - NET_BIND_SERVICE
+      - NET_RAW
     ports:
       - "8080:8080"
     depends_on:
       - redis
       - rabbitmq
-      - postgres
+      - mysql
 
   redis:
     network_mode: host
     image: redis:alpine
+    container_name: redis
 
   rabbitmq:
     network_mode: host
     image: rabbitmq:alpine
+    container_name: rabbitmq
 
-  postgres:
+  mysql:
     network_mode: host
     image: mysql:latest
+    container_name: mysql
     environment:
       - MYSQL_USER=internetnl
       - MYSQL_ROOT_PASSWORD=password
